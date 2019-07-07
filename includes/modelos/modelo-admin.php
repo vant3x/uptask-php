@@ -3,8 +3,10 @@
 $accion = $_POST['accion'];
 $password = $_POST['password'];
 $usuario = $_POST['usuario'];
-$email = $_POST['email'];
-
+if ($_POST['email']) {
+	$email = $_POST['email'];
+}
+ 
 
 if ($accion === 'crear') {
 	// hashear password
@@ -20,7 +22,7 @@ if ($accion === 'crear') {
 		// consulta bd
 		$stmt = 
 			$conn->prepare("INSERT INTO usuarios (email, usuario, password) VALUES (?, ?, ?)");
-        $stmt->bind_param('sss', $email, $test, $usuario  , $hash_password);
+        $stmt->bind_param('sss', $email, $usuario  , $hash_password);
 		$stmt->execute();
 		if ($stmt->affected_rows > 0) {
 		     $respuesta = array(
@@ -47,6 +49,57 @@ if ($accion === 'crear') {
 	
 }
 
+// 
+
 if ($accion === 'login') {
-	//
+	include_once '../funciones/conexion.php';
+
+	try {
+		$stmt = $conn->prepare("SELECT usuario, email, id, password, nombre, apellidos, avatar FROM usuarios WHERE usuario = ?");
+		$stmt->bind_param('s', $usuario);
+		$stmt->execute();
+		// login
+		$stmt->bind_result(
+			$nombre_usuario, 
+			$email_usuario, 
+			$id_usuario, 
+			$pass_usuario,
+			$nombre,
+			$apellidos,
+			$avatar
+		);
+		$stmt->fetch();
+		if ($nombre_usuario) {
+
+			 if (password_verify($password, $pass_usuario)) {
+			 	// Login Correcto
+				  $respuesta = array(
+					'respuesta' => 'correcto',
+					'id' => $id_usuario,
+					'usuario' => $nombre_usuario,
+					'email' => $email_usuario,
+					'password' => $pass_usuario,
+					'nombre_real' => $nombre,
+					'apellidos' => $apellidos,
+					'avatar' => $avatar
+				 ); 
+			 } else {
+			 	$respuesta = array(
+			 		'resultado' => 'Password incorrecto'
+			 	);
+			 }
+		} else {
+			$respuesta = array(
+				'error' => 'El Usuario no existe'
+			);
+		}
+		$stmt->close();
+		$conn->close();
+	} catch (Exception $e) {
+		$respuesta = array(
+			'pass' => $e->getMessage()
+		);
+	}
+
+	 echo json_encode($respuesta);
 }

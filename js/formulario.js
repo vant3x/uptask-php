@@ -7,12 +7,28 @@ function eventListeners() {
 function validarRegistro(e) {
 	e.preventDefault();
 
-	var email = document.querySelector('#email').value,
-		usuario = document.querySelector('#usuario').value,
+	var usuario = document.querySelector('#usuario').value,
 		password = document.querySelector("#password").value,
 		tipo = document.querySelector("#tipo").value;
 
-		if (email === '' ||  usuario === '' || password === '') {
+		if (document.querySelector('#email')) {
+			var email = document.querySelector('#email').value;
+		}
+	// validar si hay email 
+	
+		var camposRegistro = email === '' ||  usuario === '' || password === '';
+		var camposLogin = usuario === '' || password === '';
+
+		var campos;
+
+		if (document.querySelector('#email')) {
+			campos = camposRegistro;
+		} else {
+			campos = camposLogin;
+
+		}
+
+		if (campos) {
 			swal({
 				type: 'error',
 				title: 'Error :(',
@@ -21,11 +37,19 @@ function validarRegistro(e) {
 			})
 		} else {
 			// todos los campos son correctos, ajax
-			var datos = new FormData();
-			datos.append('email', email);
-			datos.append('usuario', usuario);
-			datos.append('password', password);
-			datos.append('accion', tipo);
+			if (campos == camposRegistro) {
+				var datos = new FormData();
+				datos.append('email', email);
+				datos.append('usuario', usuario);
+				datos.append('password', password);
+				datos.append('accion', tipo);
+			} else {
+				var datos = new FormData();
+				datos.append('usuario', usuario);
+				datos.append('password', password);
+				datos.append('accion', tipo);
+			}
+			
 
 			// crear el llamado a ajax
 
@@ -35,7 +59,8 @@ function validarRegistro(e) {
 			xhr.onload = function() {
 				if (this.status === 200) {
 					var respuesta = JSON.parse(xhr.responseText);
-					
+                    
+                    console.log(respuesta);
 					if (respuesta.respuesta === 'correcto') {
 						// si es nuevo usuario
 						if (respuesta.tipo === 'crear') {
@@ -57,6 +82,6 @@ function validarRegistro(e) {
 			}
 
 			// enviar peticion
-			xhr.send(datos);
-		}
+			xhr.send(datos);		
+	}
 }

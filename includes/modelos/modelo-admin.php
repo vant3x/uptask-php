@@ -81,7 +81,8 @@ if ($accion === 'login') {
 					'password' => $pass_usuario,
 					'nombre_real' => $nombre,
 					'apellidos' => $apellidos,
-					'avatar' => $avatar
+					'avatar' => $avatar,
+					'tipo' => $accion
 				 ); 
 			 } else {
 			 	$respuesta = array(

@@ -60,15 +60,31 @@ function validarRegistro(e) {
 				if (this.status === 200) {
 					var respuesta = JSON.parse(xhr.responseText);
                     
-                    console.log(respuesta);
+                    // console.log(respuesta);
 					if (respuesta.respuesta === 'correcto') {
 						// si es nuevo usuario
 						if (respuesta.tipo === 'crear') {
 							swal({
 								title: 'Usuario Creado',
-								text: 'El usuario se creo correctamente',
+								text: 'El usuario se creó con éxito!',
 								type: 'success'
 							});
+						} else if (respuesta.tipo === 'login') {
+							setTimeout( () => {
+								window.location.href = 'index.php'
+
+							},2800);
+
+							swal({
+								title: 'Login Correcto',
+								text: 'En un momento te llevaremos a la página de inicio',
+								type: 'success',
+								confirmButtonText: 'Aceptar'
+							}).then(resultado => {
+								if (resultado.value) {
+									window.location.href = 'index.php'
+								}
+							})
 						}
 					} else {
 						swal({

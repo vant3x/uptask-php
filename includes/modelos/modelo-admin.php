@@ -70,9 +70,13 @@ if ($accion === 'login') {
 		);
 		$stmt->fetch();
 		if ($nombre_usuario) {
-
 			 if (password_verify($password, $pass_usuario)) {
-			 	// Login Correcto
+			 	// iniciar session
+			 	session_start();
+			 	$_SESSION['usuario'] = $nombre_usuario;
+			 	$_SESSION['id'] = $id_usuario;
+			 	$_SESSION['login'] = true;
+ 			 	// Login Correcto
 				  $respuesta = array(
 					'respuesta' => 'correcto',
 					'id' => $id_usuario,

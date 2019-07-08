@@ -2,11 +2,15 @@
     include_once './includes/funciones/helpers.php';
     include_once './includes/funciones/conexion.php';
     include_once './includes/templates/header.php'; 
+    session_start();
+    if (isset($_GET['login'])) {
+        $_SESSION = array();
+    } 
 
 ?>
     <div class="contenedor-formulario">
         <h1><i class="fas fa-tasks"></i> UpTask</h1>
-        <form id="formulario" class="caja-login" method="post">
+        <form id="formulario" class="caja-login animated bounceInDown" method="post">
              <div class="center">
                  <i class="fas fa-user-circle avatar-default-user"></i>
             </div>

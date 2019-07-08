@@ -1,39 +1,17 @@
 <?php 
+    include_once './includes/funciones/sessions.php';
     include_once './includes/funciones/helpers.php';
-
     include_once './includes/templates/header.php';
+    include_once './includes/templates/barra.php';
+
  ?>
 
 
-<div class="barra">
-    <h1><i class="fas fa-tasks"></i> UpTask - Administración de Proyectos</h1>
-    <a href="#"> <i class="fas fa-sign-out-alt"></i>  Cerrar Sesión</a>
-</div>
-
+ 
 <div class="contenedor">
-    <aside class="contenedor-proyectos">
-        <div class="panel crear-proyecto">
-            <a href="#" class="boton btn-box-shadow">Nuevo Proyecto <i class="fas fa-plus"></i> </a>
-        </div>
-    
-        <div class="panel lista-proyectos">
-            <h2>Proyectos</h2>
-            <ul id="proyectos">
-                <li>
-                    <a href="#">
-                        Diseño Página Web
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        Nuevo Sitio en wordPress
-                    </a>
-                </li>
-            </ul>
-        </div>
-    </aside>
+   <?php include_once './includes/templates/sidebar.php' ?>
 
-    <main class="contenido-principal">
+    <main class="contenido-principal animated bounceInDown">
 
         <h1><bold class="font-blue-light">Proyecto Actual:</bold>
             <span>Diseño de Página Web</span>
@@ -69,9 +47,4 @@
     </main>
 </div><!--.contenedor-->
 
-
-<script src="js/sweetalert2.all.min.js"></script>
-
-
-</body>
-</html>
+<?php include_once  './includes/templates/footer.php'; ?>

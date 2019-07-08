@@ -5,13 +5,11 @@
 
 ?>
 
-
-
     <div class="contenedor-formulario">
         <h1>
             <i class="fas fa-tasks"></i> UpTask <span>Crear Cuenta</span>
         </h1>
-        <form id="formulario" class=" caja-login" method="post">
+        <form id="formulario" class=" caja-login animated bounceInDown" method="post">
             
             <div class="center">
                  <i class="fas fa-user-circle avatar-default-user"></i>

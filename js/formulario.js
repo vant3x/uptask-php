@@ -50,6 +50,7 @@ function validarRegistro(e) {
 				datos.append('accion', tipo);
 			}
 			
+			
 
 			// crear el llamado a ajax
 

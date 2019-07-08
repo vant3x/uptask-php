@@ -104,12 +104,33 @@ body {
     border: none;
     font-weight: 900;
 }
+
+.boton-no-upper {
+    color: #1E2A5C;
+    border-radius:5px;
+    background-color: #FDD835;
+    text-align: center;
+    transition: background-color .5s ease-in-out;
+    display: block;
+    padding: 1rem;
+    padding-left:1.6rem;
+    padding-right:1.6rem;
+    text-transform: capitalize;
+    font-weight: 400;
+    border: none;
+    font-weight: 900;
+}
 .btn-box-shadow {
     box-shadow:0px 0px 12px rgba(0,0,0,0.12);
 }
 .boton:hover {
     cursor: pointer;
-    background-color: #F2C80E !important;
+    background-color: #E9BF03 !important;
+
+}
+.boton-no-upper:hover {
+    cursor: pointer;
+    background-color: #E9BF03 !important;
 
 }
 .campo a {
@@ -216,6 +237,7 @@ body.index {
     max-width: 800px;
     width: 90%;
     /*background-color: #607D8B;
+    background-color: #242F98;
     background-color: #242F98;*/
 
     margin: 0 auto;
@@ -267,5 +289,12 @@ body.index {
     padding: .5rem;
     text-align: center;
     color: white;
+    font-size: 1.2rem;
+}
+
+.alert-error {
+    padding: .2rem;
+    text-align: center;
+    color: rgb(250, 41, 41);
     font-size: 1.2rem;
 }

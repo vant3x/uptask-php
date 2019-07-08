@@ -45,8 +45,6 @@ if ($accion === 'crear') {
 	}
 
     echo json_encode($respuesta);
-
-	
 }
 
 // 

@@ -139,9 +139,9 @@ body {
 }
 
 /** Barra **/
-body.index {
-    height: 100vh;
-}
+/*body.index {
+    height: 100%;
+}*/
 .barra {
     background-color: #455A64;
     background-color: #293462;
@@ -149,6 +149,7 @@ body.index {
     padding: 1rem;
     height: 60px;
     display: flex;
+    /*justify-content: space-between;*/
     justify-content: space-between;
     align-items: center;
 }
@@ -158,16 +159,24 @@ body.index {
     font-size: 1.4rem;
 }
 .barra a {
+    margin-right:10px;
     color: white;
     text-decoration: none;
 }
 
+.input-proyecto {
+   padding:12px 14px;
+   border-radius: 4px;
+   border:none;
+}
+
 /*** sidebar**/
 .contenedor-proyectos {
+    height: 100%;
     min-height: 100vh;
     max-width: 300px;
     background-color: #607D8B;
-        background-color: #242F98;
+    background-color: #242F98;
 
     padding-top: 1rem;
 }
@@ -203,6 +212,7 @@ body.index {
 }
 .lista-proyectos ul li {
     margin-bottom: 1rem;
+    /*   text-align: center;*/
 }
 .lista-proyectos ul li a:hover {
     color: #FDD835;
@@ -297,4 +307,29 @@ body.index {
     text-align: center;
     color: rgb(250, 41, 41);
     font-size: 1.2rem;
+}
+
+
+/* sidebar usuario */
+.usuario-basic-info {
+    text-align: center;
+    margin:0;
+    padding:0;
+}
+
+.usuario-basic-info > .avatar-default {
+    color:#fff;
+    font-size:42px;
+}
+
+
+.usuario-basic-info > .nombre-usuario {
+    color:#fff;
+    margin-bottom:5px;
+}
+
+.usuario-basic-info > a {
+    color:#FDD835;
+    text-decoration: none;
+    margin-top:-40px !important;
 }

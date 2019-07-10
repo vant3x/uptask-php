@@ -4,6 +4,12 @@
     include_once './includes/templates/header.php';
     include_once './includes/templates/barra.php';
 
+    // Obtener el ID de la url
+    $id_proyecto = '';
+    if (isset($_GET['id_proyecto'])) {
+        $id_proyecto = $_GET['id_proyecto'];
+    }
+
  ?>
 
 
@@ -13,9 +19,15 @@
 
     <main class="contenido-principal animated bounceInDown">
 
-        <h1><bold class="font-blue-light">Proyecto Actual:</bold>
-            <span>Diseño de Página Web</span>
-        </h1>
+    <?php 
+        $proyecto = obtenerNombreProyecto($id_proyecto);
+        if ($proyecto): ?>
+            <h1><bold class="font-blue-light">Proyecto Actual:</bold>
+
+            <?php foreach ($proyecto as $nombre):  ?>
+                <span><?= $nombre['nombre']; ?></span>
+            <?php endforeach; ?> 
+            </h1>
 
         <form action="#" class="agregar-tarea">
             <div class="campo">
@@ -23,12 +35,16 @@
                 <input type="text" placeholder="Nombre Tarea" class="nombre-tarea"> 
             </div>
             <div class="campo enviar">
-                <input type="hidden" id="id_proyecto" value="id_proyecto">
+                <input type="hidden" id="<?=$id_proyecto;?>" value="<?=$id_proyecto;?>">
                 <input type="submit" class="boton btn-box-shadow  nueva-tarea" value="Agregar">
             </div>
         </form>
-        
- 
+        <?php 
+            else:
+                // Si no hay proyectos seleccionados
+                echo "Selecciona un Proyecto a la izquierda";
+            endif;
+        ?>
 
         <h2>Listado de tareas:</h2>
 

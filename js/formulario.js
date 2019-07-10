@@ -74,7 +74,7 @@ function validarRegistro(e) {
 							setTimeout( () => {
 								window.location.href = 'index.php'
 
-							},2800);
+							},2400);
 
 							swal({
 								title: 'Login Correcto',

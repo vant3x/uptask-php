@@ -22,6 +22,7 @@ if ($accion === 'crear') {
                 'id_insertado' => $stmt->insert_id,
                 'tipo' => $accion,
                 'nombre_proyecto' => $proyecto,
+                'fecha_creacion' => $date,
                 'id_usuario' => $id_usuario
             );
         }  else {

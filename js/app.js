@@ -1,6 +1,7 @@
 eventListeners();
 // lista de proyectos
-let listaProyectos = document.querySelector('ul#proyectos');
+var listaProyectos = document.querySelector('ul#proyectos');
+var inputProyectosContainter = document.querySelector('ul#input-proyectos-container');
 let evitarRepetir = 0;
 
 function eventListeners() {
@@ -18,14 +19,15 @@ function nuevoProyecto(e) {
 		evitarRepetir++;
 
 		var nuevoProyecto = document.createElement('li');	
-		let inputProyectoElement = '<input required class="animated heartBeat" placeholder="Nombre del Proyecto" style="padding:8px 10px;" type="text" id="nuevo-proyecto"><li id="position-alert">';
+		let inputProyectoElement = '<input required class="animated heartBeat input-proyecto" placeholder="Nombre del Proyecto" type="text" id="nuevo-proyecto"><li id="position-alert">';
 		nuevoProyecto.innerHTML = inputProyectoElement;
-		listaProyectos.appendChild(nuevoProyecto);
+		inputProyectosContainter.appendChild(nuevoProyecto);
 		// boton
 		var containerBtnCrear = document.createElement('div');
 		let btnCrearProyecto = '<input type="submit" id="btnGuardarProyecto" class="boton-no-upper btn-box-shadow animated heartBeat" value="Guardar">';
 		containerBtnCrear.innerHTML = btnCrearProyecto;
-		listaProyectos.appendChild(containerBtnCrear);
+		inputProyectosContainter.appendChild(containerBtnCrear);
+		inputProyectosContainter.style.display = 'block';
 	}
 
 	// seleccionar el id con el nuevo proyecto
@@ -43,13 +45,14 @@ function nuevoProyecto(e) {
 				listaProyectos.removeChild(nuevoProyecto);
 				listaProyectos.removeChild(containerBtnCrear);
 				evitarRepetir = 0;
-				document.querySelector('#alerta').remove();
-
+				if (document.querySelector('#alerta')) {
+					document.querySelector('#alerta').remove();
+				}
 
 			} else {
 				if (!document.querySelector('#alerta')) {
 					var alertError = document.createElement('li');
-					alertError.innerHTML = '<p class="alert-error" id="alerta">Campo obligatorio</p>';
+					alertError.innerHTML = '<p class="alert-error animated heartBeat" id="alerta">Campo obligatorio</p>';
 					document.querySelector('#position-alert').appendChild(alertError);
 				}
 			}
@@ -70,7 +73,7 @@ function nuevoProyecto(e) {
 		} else {
 			if (!document.querySelector('#alerta')) {
 				var alertError = document.createElement('li');
-				alertError.innerHTML = '<p class="alert-error" id="alerta">Campo obligatorio</p>';
+				alertError.innerHTML = '<p class="alert-error animated heartBeat" id="alerta">Campo obligatorio</p>';
 				document.querySelector('#position-alert').appendChild(alertError);
 			}
 		}
@@ -79,7 +82,6 @@ function nuevoProyecto(e) {
 }
 
 function guardarProyectoDB(nombreProyecto) {
-	// console.log(nombreProyecto);
 	// Crear llamado AJAX
 	var xhr = new XMLHttpRequest();
 	// enviar datos
@@ -93,21 +95,59 @@ function guardarProyectoDB(nombreProyecto) {
 	// en la carga 
 	xhr.onload = function() {
 		if (this.status === 200) {
-			console.log(JSON.parse(xhr.responseText));
+			// obtener datos de la respuesta
+			let respuesta = JSON.parse(xhr.responseText);
+			let proyecto = respuesta.nombre_proyecto,
+				id_proyecto = respuesta.id_insertado,
+				id_usuario = respuesta.id_usuario,
+				fecha_creacion = respuesta.fecha_creacion,
+				tipo = respuesta.tipo,
+				resultado = respuesta.respuesta;
+
+				// Comprobar la inserccion
+				if (resultado === 'correcto') {
+					if (tipo === 'crear') {
+						// inyectar en el HTML
+						let nuevoProyectoList = document.createElement('li');
+						nuevoProyectoList.innerHTML = `
+							<a href="index.php?id_respuesta=${id_proyecto}" id="${id_proyecto}">
+								${proyecto}
+							</a>
+						`;	
+						// agregar al html
+						listaProyectos.appendChild(nuevoProyectoList);
+
+						// agregar alerta o mensaje personalizado
+						swal({
+							title: 'Proyecto Creado!',
+							text: 'El Proyecto: ' + proyecto + ' se creó correctamente',
+							type: 'success'
+
+						})
+						.then(resultado => {
+							if (resultado.value) {
+								window.location.href = 'index.php?id_respuesta=' + id_proyecto;
+							}
+						})
+
+						// redireccionar a la nueva URL
+						setTimeout(function() {
+							window.location.href = 'index.php?id_respuesta=' + id_proyecto;
+						},1700);
+					} else {
+						// se actualizo o se elimino
+					}
+				} else {
+					swal({
+						type:'error',
+						title:'Error',
+						text: 'Hubo un error!'
+					})
+				}
 		}
 	}
 
 	// enviar al request
 	xhr.send(datos);
 }
-/*
 
-	let nuevoProyectoList = document.createElement('li');
-	nuevoProyectoList.innerHTML = ` 
-		<a href="#">
-			${nombreProyecto}
-		</a>
-	`;
-	listaProyectos.appendChild(nuevoProyectoList);
-
-	*/

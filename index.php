@@ -35,14 +35,14 @@
                 <input type="text" placeholder="Nombre Tarea" class="nombre-tarea"> 
             </div>
             <div class="campo enviar">
-                <input type="hidden" id="<?=$id_proyecto;?>" value="<?=$id_proyecto;?>">
+                <input type="hidden" id="id_proyecto" value="<?=$id_proyecto;?>">
                 <input type="submit" class="boton btn-box-shadow  nueva-tarea" value="Agregar">
             </div>
         </form>
         <?php 
             else:
                 // Si no hay proyectos seleccionados
-                echo "Selecciona un Proyecto a la izquierda";
+                echo "<h3>Selecciona un Proyecto a la izquierda</h3>";
             endif;
         ?>
 

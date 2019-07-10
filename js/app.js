@@ -2,11 +2,17 @@ eventListeners();
 // lista de proyectos
 var listaProyectos = document.querySelector('ul#proyectos');
 var inputProyectosContainter = document.querySelector('ul#input-proyectos-container');
-let evitarRepetir = 0;
+var evitarRepetir = 0;
 
 function eventListeners() {
 	// boton para crear proyecto
 	document.querySelector('.crear-proyecto a').addEventListener("click", nuevoProyecto);
+	// si quitas esta linea funciona
+  // Boton para una nueva tarea
+    if(document.querySelector('.nueva-tarea') !== null ) {
+        document.querySelector('.nueva-tarea').addEventListener('click', agregarTarea);
+    }
+    
 }
 
 function nuevoProyecto(e) {
@@ -31,7 +37,7 @@ function nuevoProyecto(e) {
 	}
 
 	// seleccionar el id con el nuevo proyecto
-	let inputNuevoProyecto = document.querySelector('#nuevo-proyecto');
+	let inputNuevoProyecto = document.getElementById('nuevo-proyecto');
 
 	// al presionar enter crear el proyecto
 	inputNuevoProyecto.addEventListener('keypress', function (e) {
@@ -63,8 +69,8 @@ function nuevoProyecto(e) {
 		if (inputNuevoProyecto.value !== '') {
 			guardarProyectoDB(inputNuevoProyecto.value);
 			// desaparecer input y boton
-			listaProyectos.removeChild(nuevoProyecto);
-			listaProyectos.removeChild(containerBtnCrear);
+			inputProyectosContainter.removeChild(nuevoProyecto);
+			inputProyectosContainter.removeChild(containerBtnCrear);
 			evitarRepetir = 0;
 			if (document.querySelector('#alerta')) {
 				document.querySelector('#alerta').remove();
@@ -83,7 +89,7 @@ function nuevoProyecto(e) {
 
 function guardarProyectoDB(nombreProyecto) {
 	// Crear llamado AJAX
-	var xhr = new XMLHttpRequest();
+	let xhr = new XMLHttpRequest();
 	// enviar datos
 	var datos = new FormData();
 	datos.append('proyecto', nombreProyecto);
@@ -126,13 +132,13 @@ function guardarProyectoDB(nombreProyecto) {
 						})
 						.then(resultado => {
 							if (resultado.value) {
-								window.location.href = 'index.php?id_respuesta=' + id_proyecto;
+								window.location.href = 'index.php?id_proyecto=' + id_proyecto;
 							}
 						})
 
 						// redireccionar a la nueva URL
 						setTimeout(function() {
-							window.location.href = 'index.php?id_respuesta=' + id_proyecto;
+							window.location.href = 'index.php?id_proyecto=' + id_proyecto;
 						},1700);
 					} else {
 						// se actualizo o se elimino
@@ -151,3 +157,36 @@ function guardarProyectoDB(nombreProyecto) {
 	xhr.send(datos);
 }
 
+// Agregar tarea al proyecto actual
+
+function agregarTarea (e) {
+	e.preventDefault();
+
+	var nombreTarea = document.querySelector('.nombre-tarea').value;
+	// validar que el campo no esté vacío
+	if (nombreTarea === '') {
+		swal({
+			title: 'Error',
+			text: 'El campo nombre no puede estar vacío',
+			type: 'error'
+		});
+	} else {
+		let xhr = new XMLHttpRequest();
+		let datos = new FormData();
+		let id_proyecto_actual = document.querySelector('#id_proyecto').value; 
+		datos.append('tarea',nombreTarea);
+		datos.append('tipo','crear');
+		datos.append('id_proyecto', id_proyecto_actual);
+
+
+		xhr.open('POST','includes/modelos/modelo-tareas.php',true);
+
+		xhr.onload = function() {
+			if (this.status === 200) {
+				var respuesta = JSON.parse(xhr.responseText);
+				console.log(respuesta);
+			}
+		}
+		xhr.send(datos);
+	}
+}

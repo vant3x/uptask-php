@@ -175,7 +175,7 @@ function agregarTarea (e) {
 		let datos = new FormData();
 		let id_proyecto_actual = document.querySelector('#id_proyecto').value; 
 		datos.append('tarea',nombreTarea);
-		datos.append('tipo','crear');
+		datos.append('accion','crear');
 		datos.append('id_proyecto', id_proyecto_actual);
 
 
@@ -184,7 +184,53 @@ function agregarTarea (e) {
 		xhr.onload = function() {
 			if (this.status === 200) {
 				var respuesta = JSON.parse(xhr.responseText);
-				console.log(respuesta);
+				// asignar valores
+				let resultado = respuesta.respuesta,
+					tarea = respuesta.nombre_tarea,
+					id_insertado = respuesta.id_insertado,
+					tipo = respuesta.tipo;
+
+				if(resultado === 'correcto') {
+					if (tipo === 'crear') {
+						swal({
+							type:'success',
+							title: 'Tarea Creada',
+							text: 'La tarea se creó con éxito!'
+						});
+
+						// template
+						let nuevaTarea = document.createElement('li');
+
+						// agregar el ID
+						nuevaTarea.id = 'tarea:'+id_insertado;
+
+						// clase tarea
+						nuevaTarea.classList.add('tarea');
+
+						// insertar en el html
+						nuevaTarea.innerHTML = `
+							<p>${tarea}</p>
+							<div class="acciones">
+								<i class="far fa-check-circle"></i>
+								<i class="fas fa-trash"></i>
+							</div>
+						`;
+
+						// agregarlo al dom
+						var listadoTareas = document.querySelector('.listado-pendientes ul');
+						listadoTareas.appendChild(nuevaTarea);
+
+						// limpiar formulario
+						document.querySelector('.agregar-tarea').reset();
+					}
+				} else {
+					// hubo un error
+					swal({
+						type: 'error',
+						title: 'Error',
+						text: 'Hubo un error al agregar la tarea'
+					});
+				}
 			}
 		}
 		xhr.send(datos);

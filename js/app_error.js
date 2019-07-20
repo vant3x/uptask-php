@@ -5,32 +5,32 @@ var inputProyectosContainter = document.querySelector('ul#input-proyectos-contai
 var evitarRepetir = 0;
 
 function eventListeners() {
-	// boton para crear proyecto
-	document.querySelector('.crear-proyecto a').addEventListener("click", nuevoProyecto);
-	// si quitas esta linea funciona
-
-  // Boton para una nueva tarea
+ // boton para crear proyecto
+    document.querySelector('.crear-proyecto a').addEventListener('click', nuevoProyecto);
+    
+    
+    // Boton para una nueva tarea
     if(document.querySelector('.nueva-tarea') !== null ) {
         document.querySelector('.nueva-tarea').addEventListener('click', agregarTarea);
     }
-
-
+    
+    
     // Botones para las acciones de las tareas
     document.querySelector('.listado-pendientes').addEventListener('click', accionesTareas);
-    
 }
 
 function nuevoProyecto(e) {
 	e.preventDefault();
 
 	// Crea un input para nuevo proyecto
+	var listaProyectos = document.querySelector('ul#proyectos');
 
 	// validar que solo se cree una vez el input
 	if (evitarRepetir <= 0) {
 		evitarRepetir++;
 
 		var nuevoProyecto = document.createElement('li');	
-		let inputProyectoElement = '<input required class="animated heartBeat input-proyecto" placeholder="Nombre del Proyecto" type="text" id="nuevo-proyecto"><li id="position-alert">';
+		var inputProyectoElement = '<input required class="animated heartBeat input-proyecto" placeholder="Nombre del Proyecto" type="text" id="nuevo-proyecto"><li id="position-alert">';
 		nuevoProyecto.innerHTML = inputProyectoElement;
 		inputProyectosContainter.appendChild(nuevoProyecto);
 		// boton
@@ -42,7 +42,7 @@ function nuevoProyecto(e) {
 	}
 
 	// seleccionar el id con el nuevo proyecto
-	let inputNuevoProyecto = document.getElementById('nuevo-proyecto');
+    var inputNuevoProyecto = document.querySelector('#nuevo-proyecto');
 
 	// al presionar enter crear el proyecto
 	inputNuevoProyecto.addEventListener('keypress', function (e) {
@@ -94,7 +94,7 @@ function nuevoProyecto(e) {
 
 function guardarProyectoDB(nombreProyecto) {
 	// Crear llamado AJAX
-	let xhr = new XMLHttpRequest();
+	var xhr = new XMLHttpRequest();
 	// enviar datos
 	var datos = new FormData();
 	datos.append('proyecto', nombreProyecto);
@@ -107,8 +107,8 @@ function guardarProyectoDB(nombreProyecto) {
 	xhr.onload = function() {
 		if (this.status === 200) {
 			// obtener datos de la respuesta
-			let respuesta = JSON.parse(xhr.responseText);
-			let proyecto = respuesta.nombre_proyecto,
+			var respuesta = JSON.parse(xhr.responseText);
+			var proyecto = respuesta.nombre_proyecto,
 				id_proyecto = respuesta.id_insertado,
 				id_usuario = respuesta.id_usuario,
 				fecha_creacion = respuesta.fecha_creacion,
@@ -119,9 +119,9 @@ function guardarProyectoDB(nombreProyecto) {
 				if (resultado === 'correcto') {
 					if (tipo === 'crear') {
 						// inyectar en el HTML
-						let nuevoProyectoList = document.createElement('li');
+						var nuevoProyectoList = document.createElement('li');
 						nuevoProyectoList.innerHTML = `
-							<a href="index.php?id_respuesta=${id_proyecto}" id="${id_proyecto}">
+							<a href="index.php?id_proyecto=${id_proyecto}" id="proyecto:${id_proyecto}">
 								${proyecto}
 							</a>
 						`;	
@@ -149,17 +149,18 @@ function guardarProyectoDB(nombreProyecto) {
 						// se actualizo o se elimino
 					}
 				} else {
-					swal({
-						type:'error',
-						title:'Error',
-						text: 'Hubo un error!'
-					})
-				}
-		}
-	}
-
-	// enviar al request
-	xhr.send(datos);
+	       		swal({
+                  type: 'error',
+                  title: 'Error!',
+                  text: 'Hubo un error!'
+                })
+            }
+        }
+    }
+    
+    // Enviar el Request
+    xhr.send(datos);
+    
 }
 
 // Agregar tarea al proyecto actual
@@ -174,37 +175,42 @@ function agregarTarea (e) {
 			title: 'Error',
 			text: 'El campo nombre no puede estar vacío',
 			type: 'error'
-		});
+		})
 	} else {
-		let xhr = new XMLHttpRequest();
-		let datos = new FormData();
-		let id_proyecto_actual = document.querySelector('#id_proyecto').value; 
-		datos.append('tarea',nombreTarea);
-		datos.append('accion','crear');
-		datos.append('id_proyecto', id_proyecto_actual);
+		 var xhr = new XMLHttpRequest();
+        
+        // crear formdata
+        var datos = new FormData();
+        datos.append('tarea',nombreTarea );
+        datos.append('accion', 'crear');
+        datos.append('id_proyecto', document.querySelector('#id_proyecto').value );
 
 
 		xhr.open('POST','includes/modelos/modelo-tareas.php',true);
-
-		xhr.onload = function() {
-			if (this.status === 200) {
-				var respuesta = JSON.parse(xhr.responseText);
+ 		
+  		xhr.onload = function() {
+            if(this.status === 200) {
+                // todo correcto
+                var respuesta = JSON.parse(xhr.responseText);
 				// asignar valores
-				let resultado = respuesta.respuesta,
+				var resultado = respuesta.respuesta,
 					tarea = respuesta.nombre_tarea,
 					id_insertado = respuesta.id_insertado,
 					tipo = respuesta.tipo;
 
-				if(resultado === 'correcto') {
-					if (tipo === 'crear') {
-						swal({
-							type:'success',
-							title: 'Tarea Creada',
-							text: 'La tarea se creó con éxito!'
-						});
+		          if(resultado === 'correcto') {
+                    // se agregó correctamente
+                    if(tipo === 'crear') {
+                        // lanzar la alerta
+                        swal({
+                          type: 'success',
+                          title: 'Tarea Creada',
+                          text: 'La tarea: ' + tarea + ' se creó correctamente'
+                        });
+                        
 
 						// template
-						let nuevaTarea = document.createElement('li');
+						var nuevaTarea = document.createElement('li');
 
 						// agregar el ID
 						nuevaTarea.id = 'tarea:'+id_insertado;
@@ -244,6 +250,7 @@ function agregarTarea (e) {
 
 // Cambia el estado de las tareas o las elimina
 
+
 function accionesTareas(e) {
     e.preventDefault();
     
@@ -256,13 +263,12 @@ function accionesTareas(e) {
             cambiarEstadoTarea(e.target, 1);
         }
     }
-    
-    if(e.target.classList.contains('fa-trash')) {
-    	alert("Eliminando");
-    } 
+	if (e.target.classList.contains('fa-trash')) {
+		alert("eliminar");
+	} 
 }
 
-// Completa o descompleta una tarea
+// Completa o descompleta la tarea
 function cambiarEstadoTarea(tarea, estado) {
     var idTarea = tarea.parentElement.parentElement.id.split(':');
     
@@ -274,13 +280,12 @@ function cambiarEstadoTarea(tarea, estado) {
     datos.append('id', idTarea[1]);
     datos.append('accion', 'actualizar');
     datos.append('estado', estado);
-    
-    // abrir la conexion
-    xhr.open('POST', 'includes/modelos/modelo-tareas.php', true);
-    
+
+	xhr.open('POST','includes/modelos/modelo-tareas.php',true);
+
     // on load
     xhr.onload = function() {
-        if (this.status === 200) {
+        if(this.status === 200) {
             console.log(JSON.parse(xhr.responseText));
         }
     }

@@ -8,9 +8,7 @@ function obtenerPaginaActual () {
 	return $pagina;
 }
 
-
 /* Consultas */ 
-
 
 /* Obtener todos los proyectos */
 
@@ -36,4 +34,17 @@ function obtenerNombreProyecto($id = null) {
 		return false;
 	}
 
+}
+
+// Obtener tareas de proyecto
+
+function obtenerTareasProyecto($id_proyecto = null) {
+	include 'conexion.php';
+
+	try {
+		return $conn->query("SELECT * FROM tareas WHERE id_proyecto = {$id_proyecto}");
+	} catch (Exception $e) {
+		echo "Error! :" . $e->getMessage();
+		return false;
+	}
 }

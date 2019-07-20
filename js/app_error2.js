@@ -8,15 +8,10 @@ function eventListeners() {
 	// boton para crear proyecto
 	document.querySelector('.crear-proyecto a').addEventListener("click", nuevoProyecto);
 	// si quitas esta linea funciona
-
   // Boton para una nueva tarea
     if(document.querySelector('.nueva-tarea') !== null ) {
         document.querySelector('.nueva-tarea').addEventListener('click', agregarTarea);
     }
-
-
-    // Botones para las acciones de las tareas
-    document.querySelector('.listado-pendientes').addEventListener('click', accionesTareas);
     
 }
 
@@ -258,7 +253,7 @@ function accionesTareas(e) {
     }
     
     if(e.target.classList.contains('fa-trash')) {
-    	alert("Eliminando");
+  		alert("eliminando");
     } 
 }
 
@@ -276,12 +271,14 @@ function cambiarEstadoTarea(tarea, estado) {
     datos.append('estado', estado);
     
     // abrir la conexion
-    xhr.open('POST', 'includes/modelos/modelo-tareas.php', true);
+    xhr.open('POST', 'inc/modelos/modelo-tareas.php', true);
     
     // on load
     xhr.onload = function() {
-        if (this.status === 200) {
+        if(this.status === 200) {
             console.log(JSON.parse(xhr.responseText));
+            
+
         }
     }
     // enviar la petición

@@ -16,7 +16,10 @@
 	<h2>Tu Perfil</h2>
    <form action="">
    	<label for="">Nombre</label>
-   	<input type="text">
+   	<input type="text" value="">
+    <label for="">Apellidos</label>
+    <input type="text">
+    <label for=""></label>
    </form>
 
 </main>

@@ -39,11 +39,11 @@
                 <input type="submit" class="boton btn-box-shadow  nueva-tarea" value="Agregar">
             </div>
         </form>
-        <?php 
+        <?php /* descomentar en caso de erro(esta mas abajo este bloque)
             else:
                 // Si no hay proyectos seleccionados
                 echo "<h3>Selecciona un Proyecto a la izquierda</h3>";
-            endif;
+            endif; */
         ?>
 
         <h2>Listado de tareas:</h2>
@@ -66,12 +66,20 @@
                   <?php  endforeach;
                 } else {
                     // no hay tareas
-                    echo "<p>No hay tareas en este proyecto</p>";
+                    echo "<p class='lista-vacia'>No hay tareas en este proyecto</p>";
                 }
             ?>
 
             </ul>
         </div>
+
+        <?php 
+            else:
+                // Si no hay proyectos seleccionados
+                echo "<h3>Selecciona un Proyecto a la izquierda</h3>";
+            endif;
+        ?>
+
     </main>
 </div><!--.contenedor-->
 

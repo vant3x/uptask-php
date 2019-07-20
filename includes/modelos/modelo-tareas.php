@@ -76,3 +76,34 @@ if ($accion === 'actualizar') {
 	}
 	echo json_encode($respuesta);
 }
+
+// eliminar tarea
+
+if ($accion === 'eliminar') {
+		// importar conexion
+	include_once '../funciones/conexion.php';
+	try {
+		// consulta bd
+		$stmt = 
+			$conn->prepare("DELETE FROM tareas WHERE id = ?");
+        $stmt->bind_param('i', $id_tarea);
+		$stmt->execute();
+		if ($stmt->affected_rows > 0) {
+		     $respuesta = array(
+                'respuesta' => 'correcto'
+            );
+        }  else {
+            $respuesta = array(
+                'respuesta' => 'error'
+            );
+        }
+		$stmt->close();
+		$conn->close();
+	} catch (Exception $e) {
+		// en caso de error tomar la excepción
+		$respuesta = array(
+			'error' => $e->getMessage()
+		);
+	}
+	echo json_encode($respuesta);
+}

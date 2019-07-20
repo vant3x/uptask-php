@@ -18,7 +18,7 @@
                         foreach ($proyectos as $proyecto) { ?>
                             <li>
                             <a href="index.php?id_proyecto=<?=$proyecto['id']?>" id="proyecto:<?=$proyecto['id']?>">
-                                <?=$proyecto['nombre']?></a>
+                                <?=$proyecto['nombre']?></a> 
                             </li>
                        <?php }   
                     }

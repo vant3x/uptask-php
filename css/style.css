@@ -33,7 +33,7 @@ body {
     min-height: 100%;
 }
 .swal2-shown aside {
-    height: 100vh;
+   min-height: 100% !important;
 }
 /** Login **/
 .login,

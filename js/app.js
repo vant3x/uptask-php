@@ -5,6 +5,12 @@ var inputProyectosContainter = document.querySelector('ul#input-proyectos-contai
 var evitarRepetir = 0;
 
 function eventListeners() {
+
+	// Document Ready 
+	document.addEventListener('DOMContentLoaded', function() {
+		actualizarProgreso();
+	});
+
 	// boton para crear proyecto
 	document.querySelector('.crear-proyecto a').addEventListener("click", nuevoProyecto);
 	// si quitas esta linea funciona
@@ -233,6 +239,9 @@ function agregarTarea (e) {
 
 						// limpiar formulario
 						document.querySelector('.agregar-tarea').reset();
+
+						// actualizar el progreso
+						actualizarProgreso();
 					}
 				} else {
 					// hubo un error
@@ -314,6 +323,7 @@ function cambiarEstadoTarea(tarea, estado) {
         if (this.status === 200) {
            // console.log(JSON.parse(xhr.responseText));
             let respuesta = JSON.parse(xhr.responseText);
+            actualizarProgreso();
         }
     }
     // enviar la petición
@@ -349,8 +359,30 @@ function elimarTareaBD(tarea) {
             if (listaTareasRestantes.length === 0) {
             	document.querySelector('.listado-pendientes ul').innerHTML = "<p class='lista vacia'>No hay tareas en este proyecto</p>";
             }
+
+            // actualizar el progresp
+            actualizarProgreso();
         }
     }
     // enviar la petición
     xhr.send(datos);
+}
+
+
+// actualizar el avance del proyecto
+
+function actualizarProgreso() {
+	const tareas = document.querySelectorAll('li.tarea');
+
+	// obtener las tareas compeletadas 
+	const tareasCompletadas = document.querySelectorAll('i.completo');
+
+	// determinar el avance
+	const avance = Math.round((tareasCompletadas.length / tareas.length) * 100);
+
+	// asignar el avance a la barra
+	const porcentaje = document.querySelector('#porcentaje');
+	porcentaje.style.width = avance+'%';
+
+	console.log(avance);
 }

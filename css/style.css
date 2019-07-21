@@ -344,3 +344,26 @@ body {
     text-decoration: none;
     margin-top:-40px !important;
 }
+
+/*  BARRA de avance del proyecto */
+.barra-avance {
+    height:32px;
+    /*border:1px solid #999;*/
+    width:80%;
+    margin:0 auto;
+    border-radius: 8px;
+    max-width: 800px;
+    overflow: hidden;
+    background: #ddd;
+}
+
+.porcentaje {
+    width:0%;
+    height: 100%;
+    background: #00B762;
+    background-image: linear-gradient(45deg, rgba(255,255,255,.15)25%, transparent 25%, 
+        transparent 50%, rgba(255,255,255,.15) 50%, rgba(255,255,255,.15) 75%, transparent);
+    background-size:1rem 1rem;
+    transition: all .3s ease-in-out;
+    overflow: hidden;
+}

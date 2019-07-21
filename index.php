@@ -72,14 +72,21 @@
 
             </ul>
         </div>
-
+          <div class="avance">
+                <h2>Avance del proyecto</h2>
+                <div id="barra-avance" class="barra-avance">
+                    <div id="porcentaje" class="porcentaje">
+                        
+                    </div>
+                </div>
+            </div>
         <?php 
             else:
                 // Si no hay proyectos seleccionados
                 echo "<h3>Selecciona un Proyecto a la izquierda</h3>";
             endif;
         ?>
-
+      
     </main>
 </div><!--.contenedor-->
 

@@ -385,4 +385,13 @@ function actualizarProgreso() {
 	porcentaje.style.width = avance+'%';
 
 	console.log(avance);
+
+	// mostrar una alerta al completar el 100% del proyecto
+	if (avance === 100) {
+		swal({
+			title: 'Proyecto Completado',
+			text: 'Ya no tienes tareas pendientes en este proyecto',
+			type:'success'
+		})
+	}
 }
